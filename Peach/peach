@@ -1,0 +1,11 @@
+#!/bin/bash
+
+DIRNAME="`dirname ${0}`"
+DEBUG=""
+case "$*" in
+  *--debug*)
+    DEBUG="--debug"
+    ;;
+esac
+
+mono --gc=sgen ${DEBUG} ${DIRNAME}/Peach.exe $@

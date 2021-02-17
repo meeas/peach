@@ -1,0 +1,37 @@
+#!/usr/bin/env python
+
+excludes = {
+	# Microsoft scripting assemblies are included in IronPython
+	'IronRuby' : '**/Microsoft.*.dll'
+}
+
+bld.read_nuget('packages.config', excl=excludes)
+bld.read_nuget('packages.%s.config' % bld.env.BASENAME, excl=excludes)
+
+# Be.HexBox is not nugetable yet
+bld.read_csshlib('Be.Windows.Forms.HexBox.dll', paths=['Be.HexEditor.150/bin'])
+
+subdirs = [
+	'pin',
+	'VMware-VIX-1.12.1-894247',
+]
+
+bld.recurse(subdirs)
+
+if bld.env.CS_NAME == 'csc':
+	# Allow for compilation of all c# on windows
+	bld.read_csshlib('Mono.Posix.dll', paths=['Mono.2.10.9'])
+
+	# Needed to run remote agent tests
+	bld(
+		name = 'nunit.core.dll',
+		install_path = '${BINDIR}',
+		install_755 = { bld.path.find_node('NUnit.Runners.2.6.3/tools/lib') : 'nunit.core.dll' },
+	)
+
+if bld.env.BASENAME == 'osx':
+	bld(
+		name='CrashWrangler',
+		install_path = '${BINDIR}',
+		install_644 = bld.path.ant_glob('CrashWrangler/**/*'),
+	)

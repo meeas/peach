@@ -1,0 +1,2676 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://peachfuzzer.com/2012/Peach" elementFormDefault="qualified" targetNamespace="http://peachfuzzer.com/2012/Peach" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Peach">
+    <xs:annotation>
+      <xs:documentation>Root element of a Peach XML DDL document.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="tns:Include" />
+        <xs:element ref="tns:Import" />
+        <xs:element ref="tns:Require" />
+        <xs:element ref="tns:PythonPath" />
+        <xs:element ref="tns:RubyPath" />
+        <xs:element ref="tns:Python" />
+        <xs:element ref="tns:Ruby" />
+        <xs:element ref="tns:Defaults" />
+        <xs:element ref="tns:Data" />
+        <xs:element ref="tns:DataModel" />
+        <xs:element ref="tns:Godel" />
+        <xs:element ref="tns:StateModel" />
+        <xs:element ref="tns:Agent" />
+        <xs:element ref="tns:Test" />
+      </xs:choice>
+      <xs:attribute name="version" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Version of this XML file.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="author" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Author of this XML file.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="description" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Description of this XML file.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Include">
+    <xs:annotation>
+      <xs:documentation>Imports other Peach XML files into a namespace.
+This allows reusing existing templates from other Peach XML files.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="ns" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>The namespace prefix. One or more alphanumeric characters. Must not include a period.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="src" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>URL of file to include. For files say "file:path/to/file".</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Import">
+    <xs:annotation>
+      <xs:documentation>Import a python file into the current context.
+This allows referencing generators and methods in external python files.
+Synonymous with saying "import xyz".</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="import" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>Just like the python "import xyz" syntax.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Require">
+    <xs:annotation>
+      <xs:documentation>Import a ruby file into the current context.
+This allows referencing generators and methods in external ruby files.
+Synonymous with saying "require xyz".</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="require" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>Just like the ruby "require xyz" syntax.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PythonPath">
+    <xs:annotation>
+      <xs:documentation>Includes an additional path for python module resolution.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="path" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>Include this path when resolving python modules.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RubyPath">
+    <xs:annotation>
+      <xs:documentation>Includes an additional path for ruby module resolution.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="path" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>Include this path when resolving ruby modules.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Python">
+    <xs:annotation>
+      <xs:documentation>This element allows for running Python code.
+This is useful to call any initialization methods for code that is later used.
+This is an advanced element.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="code" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>Python code to run.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Ruby">
+    <xs:annotation>
+      <xs:documentation>This element allows for running Ruby code.
+This is useful to call any initialization methods for code that is later used.
+This is an advanced element.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="code" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>Ruby code to run.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Defaults">
+    <xs:annotation>
+      <xs:documentation>This element allow setting default values for data elements.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:all minOccurs="0" maxOccurs="1">
+        <xs:element minOccurs="0" maxOccurs="1" name="Number" type="tns:NumberDefaults" />
+        <xs:element minOccurs="0" maxOccurs="1" name="String" type="tns:StringDefaults" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Flags" type="tns:FlagsDefaults" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Blob" type="tns:BlobDefaults" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="NumberDefaults">
+    <xs:annotation>
+      <xs:documentation>Controls the default values of attributes for number elements.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute default="little" name="endian" use="optional">
+      <xs:annotation>
+        <xs:documentation>Specifies the byte order of the number.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="big">
+            <xs:annotation>
+              <xs:documentation>Big endian encoding.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="little">
+            <xs:annotation>
+              <xs:documentation>Little endian encoding.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="network">
+            <xs:annotation>
+              <xs:documentation>Big endian encoding.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="true" name="signed" type="xs:boolean" use="optional">
+      <xs:annotation>
+        <xs:documentation>Specifies if the the number signed.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="string" name="valueType" use="optional">
+      <xs:annotation>
+        <xs:documentation>Specifies the format of the value attribute.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="string">
+            <xs:annotation>
+              <xs:documentation>Regular string. C style "\" escaping can be used such as: \r, \n, \t, and \\.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="hex">
+            <xs:annotation>
+              <xs:documentation>Hex string. Allows specifying binary data.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="literal">
+            <xs:annotation>
+              <xs:documentation>Treated as a python literal string.
+An example is "[1,2,3,4]" which would evaluate to a python list.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="ipv4">
+            <xs:annotation>
+              <xs:documentation>An IPv4 string address that is converted to an array of bytes.
+An example is "127.0.0.1" which would evaluate to the bytes: 0x7f, 0x00, 0x00, 0x01.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="ipv6">
+            <xs:annotation>
+              <xs:documentation>An IPv6 string address that is converted to an array of bytes.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="StringDefaults">
+    <xs:annotation>
+      <xs:documentation>Controls the default values of attributes for string elements.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute default="ascii" name="type" use="optional">
+      <xs:annotation>
+        <xs:documentation>Specifies the character encoding of the string.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ascii">
+            <xs:annotation>
+              <xs:documentation>Single byte characters.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="utf7">
+            <xs:annotation>
+              <xs:documentation>Multibyte unicode characters encoded in UTF-7.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="utf8">
+            <xs:annotation>
+              <xs:documentation>Multibyte unicode characters encoded in UTF-8.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="utf16">
+            <xs:annotation>
+              <xs:documentation>Double byte characters as commonly used with Windows applications.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="utf16be">
+            <xs:annotation>
+              <xs:documentation>Multibyte unicode characters encoded in UTF-16 big endian.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="utf32">
+            <xs:annotation>
+              <xs:documentation>Multibyte unicode characters encoded in UTF-32.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="false" name="nullTerminated" type="xs:boolean" use="optional">
+      <xs:annotation>
+        <xs:documentation>Specifies if the string is null terminated.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="\x00" name="padCharacter" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation>Specify the character to bad the string with if it's length if less then
+specified in the length attribute. Only valid when the length attribute is also
+specified.  This field will accept python escape sequences
+such as \xNN, \r, \n, etc.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="bytes" name="lengthType" use="optional">
+      <xs:annotation>
+        <xs:documentation>Specifies the units of the length attribute.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="bytes">
+            <xs:annotation>
+              <xs:documentation>Indicates the length is specified in units of bytes.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="bits">
+            <xs:annotation>
+              <xs:documentation>Indicates the length is specified in units of bits.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="chars">
+            <xs:annotation>
+              <xs:documentation>Indicates the length is specified in units of characters.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="string" name="valueType" use="optional">
+      <xs:annotation>
+        <xs:documentation>Specify the format of the value attribute.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="string">
+            <xs:annotation>
+              <xs:documentation>Regular string. C style "\" escaping can be used such as: \r, \n, \t, and \\.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="hex">
+            <xs:annotation>
+              <xs:documentation>Hex string. Allows specifying binary data.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="literal">
+            <xs:annotation>
+              <xs:documentation>Treated as a python literal string.
+An example is "[1,2,3,4]" which would evaluate to a python list.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="ipv4">
+            <xs:annotation>
+              <xs:documentation>An IPv4 string address that is converted to an array of bytes.
+An example is "127.0.0.1" which would evaluate to the bytes: 0x7f, 0x00, 0x00, 0x01.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="ipv6">
+            <xs:annotation>
+              <xs:documentation>An IPv6 string address that is converted to an array of bytes.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="FlagsDefaults">
+    <xs:annotation>
+      <xs:documentation>Controls the default values of attributes for flags elements.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute default="little" name="endian" use="optional">
+      <xs:annotation>
+        <xs:documentation>Specifies the byte order of the flag set.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="big">
+            <xs:annotation>
+              <xs:documentation>Big endian encoding.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="little">
+            <xs:annotation>
+              <xs:documentation>Little endian encoding.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="network">
+            <xs:annotation>
+              <xs:documentation>Big endian encoding.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="size" type="xs:unsignedInt" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the length in bits of the flag set.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="BlobDefaults">
+    <xs:annotation>
+      <xs:documentation>Controls the default values of attributes for blob elements.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute default="bytes" name="lengthType" use="optional">
+      <xs:annotation>
+        <xs:documentation>Specifies the units of the length attribute.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="bytes">
+            <xs:annotation>
+              <xs:documentation>Indicates the length is specified in units of bytes.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="bits">
+            <xs:annotation>
+              <xs:documentation>Indicates the length is specified in units of bits.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="chars">
+            <xs:annotation>
+              <xs:documentation>Indicates the length is specified in units of characters.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="string" name="valueType" use="optional">
+      <xs:annotation>
+        <xs:documentation>Specifies the format of the value attribute.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="string">
+            <xs:annotation>
+              <xs:documentation>Regular string. C style "\" escaping can be used such as: \r, \n, \t, and \\.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="hex">
+            <xs:annotation>
+              <xs:documentation>Hex string. Allows specifying binary data.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="literal">
+            <xs:annotation>
+              <xs:documentation>Treated as a python literal string.
+An example is "[1,2,3,4]" which would evaluate to a python list.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="ipv4">
+            <xs:annotation>
+              <xs:documentation>An IPv4 string address that is converted to an array of bytes.
+An example is "127.0.0.1" which would evaluate to the bytes: 0x7f, 0x00, 0x00, 0x01.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="ipv6">
+            <xs:annotation>
+              <xs:documentation>An IPv6 string address that is converted to an array of bytes.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:element name="Data">
+    <xs:annotation>
+      <xs:documentation>Specifies a set of default data values for a template.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:Field" />
+      </xs:sequence>
+      <xs:attribute name="ref" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Name of other data template to reference.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Name of the data template.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="fileName" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Use contents of file to populate data model.
+Peach will try and crack the file  based on the data model.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Field">
+    <xs:complexType>
+      <xs:attribute name="name" type="xs:string" use="required" />
+      <xs:attribute name="value" type="xs:string" use="required" />
+      <xs:attribute default="string" name="valueType" use="optional">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="string">
+              <xs:annotation>
+                <xs:documentation>Regular string. C style "\" escaping can be used such as: \r, \n, \t, and \\.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="hex">
+              <xs:annotation>
+                <xs:documentation>Hex string. Allows specifying binary data.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="literal">
+              <xs:annotation>
+                <xs:documentation>Treated as a python literal string.
+An example is "[1,2,3,4]" which would evaluate to a python list.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ipv4">
+              <xs:annotation>
+                <xs:documentation>An IPv4 string address that is converted to an array of bytes.
+An example is "127.0.0.1" which would evaluate to the bytes: 0x7f, 0x00, 0x00, 0x01.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ipv6">
+              <xs:annotation>
+                <xs:documentation>An IPv6 string address that is converted to an array of bytes.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DataModel">
+    <xs:annotation>
+      <xs:documentation>DataModel is just a top level Block.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="tns:Block" />
+        <xs:element ref="tns:Blob" />
+        <xs:element ref="tns:Choice" />
+        <xs:element ref="tns:Number" />
+        <xs:element ref="tns:Flags" />
+        <xs:element ref="tns:Padding" />
+        <xs:element ref="tns:Placement" />
+        <xs:element ref="tns:String" />
+        <xs:element ref="tns:XmlAttribute" />
+        <xs:element ref="tns:XmlElement" />
+        <xs:element ref="tns:Fixup" />
+        <xs:element ref="tns:Hint" />
+        <xs:element ref="tns:Transformer" />
+        <xs:element ref="tns:Relation" />
+        <xs:element ref="tns:Analyzer" />
+      </xs:choice>
+      <xs:attribute default="true" name="mutable" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Is element mutable</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="ref" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Model to reference</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Model name</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Block">
+    <xs:annotation>
+      <xs:documentation>Block element</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="tns:Block" />
+        <xs:element ref="tns:Blob" />
+        <xs:element ref="tns:Choice" />
+        <xs:element ref="tns:Number" />
+        <xs:element ref="tns:Flags" />
+        <xs:element ref="tns:Padding" />
+        <xs:element ref="tns:Placement" />
+        <xs:element ref="tns:String" />
+        <xs:element ref="tns:XmlAttribute" />
+        <xs:element ref="tns:XmlElement" />
+        <xs:element ref="tns:Fixup" />
+        <xs:element ref="tns:Hint" />
+        <xs:element ref="tns:Transformer" />
+        <xs:element ref="tns:Relation" />
+        <xs:element ref="tns:Analyzer" />
+      </xs:choice>
+      <xs:attribute name="ref" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Element to reference</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="length" type="xs:unsignedInt" use="optional">
+        <xs:annotation>
+          <xs:documentation>Length in data element</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="1" name="occurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Actual occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="bytes" name="lengthType" use="optional">
+        <xs:annotation>
+          <xs:documentation>Units of the length attribute</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="bytes">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of bytes.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="bits">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of bits.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="chars">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of characters.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="1" name="maxOccurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Maximum occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Element name</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="true" name="mutable" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Is element mutable</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="constraint" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Scripting expression that evaluates to true or false</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="1" name="minOccurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Minimum occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Blob">
+    <xs:annotation>
+      <xs:documentation>Binary large object data element</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="tns:Placement" />
+        <xs:element ref="tns:Fixup" />
+        <xs:element ref="tns:Hint" />
+        <xs:element ref="tns:Transformer" />
+        <xs:element ref="tns:Relation" />
+        <xs:element ref="tns:Analyzer" />
+      </xs:choice>
+      <xs:attribute default="1" name="maxOccurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Maximum occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="1" name="occurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Actual occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Element name</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="length" type="xs:unsignedInt" use="optional">
+        <xs:annotation>
+          <xs:documentation>Length in data element</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="bytes" name="lengthType" use="optional">
+        <xs:annotation>
+          <xs:documentation>Units of the length attribute</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="bytes">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of bytes.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="bits">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of bits.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="chars">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of characters.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="value" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Default value</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="string" name="valueType" use="optional">
+        <xs:annotation>
+          <xs:documentation>Format of value attribute</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="string">
+              <xs:annotation>
+                <xs:documentation>Regular string. C style "\" escaping can be used such as: \r, \n, \t, and \\.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="hex">
+              <xs:annotation>
+                <xs:documentation>Hex string. Allows specifying binary data.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="literal">
+              <xs:annotation>
+                <xs:documentation>Treated as a python literal string.
+An example is "[1,2,3,4]" which would evaluate to a python list.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ipv4">
+              <xs:annotation>
+                <xs:documentation>An IPv4 string address that is converted to an array of bytes.
+An example is "127.0.0.1" which would evaluate to the bytes: 0x7f, 0x00, 0x00, 0x01.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ipv6">
+              <xs:annotation>
+                <xs:documentation>An IPv6 string address that is converted to an array of bytes.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="false" name="token" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Is element a token</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="true" name="mutable" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Is element mutable</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="constraint" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Scripting expression that evaluates to true or false</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="1" name="minOccurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Minimum occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Placement">
+    <xs:annotation>
+      <xs:documentation>Hints are attached to data elements providing information
+for mutators.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="after" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Place after this element</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="before" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Place before this element</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Fixup">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:Param" />
+      </xs:sequence>
+      <xs:attribute name="class" use="required">
+        <xs:annotation>
+          <xs:documentation>Specify the class name of a Peach Fixup. You can implement your own fixups as needed.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:union>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="1024" />
+              </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="CiscoCdpChecksum" />
+                <xs:enumeration value="CopyValue">
+                  <xs:annotation>
+                    <xs:documentation>Fixup used in testing.  Will copy another elements value into us.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Crc32Dual">
+                  <xs:annotation>
+                    <xs:documentation>Standard CRC32 as defined by ISO 3309 applied to two elements.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Crc">
+                  <xs:annotation>
+                    <xs:documentation>CRC Fixup library including CRC32 as defined by ISO 3309.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Expression">
+                  <xs:annotation>
+                    <xs:documentation>Provide scripting expression to perform fixup.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="FillValue">
+                  <xs:annotation>
+                    <xs:documentation>Will fill a BitStream with incrementing values from 'start' to 'stop'.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Hmac">
+                  <xs:annotation>
+                    <xs:documentation>Standard Hmac checksum.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="IcmpChecksum">
+                  <xs:annotation>
+                    <xs:documentation>Standard ICMP checksum.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="IcmpV6Checksum">
+                  <xs:annotation>
+                    <xs:documentation>Standard ICMPv6 checksum.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Lrc">
+                  <xs:annotation>
+                    <xs:documentation>XOR bytes of data.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Md5">
+                  <xs:annotation>
+                    <xs:documentation>Standard MD5 checksum.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Sha1">
+                  <xs:annotation>
+                    <xs:documentation>Standard SHA1 checksum.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Sha224">
+                  <xs:annotation>
+                    <xs:documentation>Standard SHA256 checksum.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Sha256">
+                  <xs:annotation>
+                    <xs:documentation>Standard SHA256 checksum.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Sha384">
+                  <xs:annotation>
+                    <xs:documentation>Standard SHA384 checksum.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Sha512">
+                  <xs:annotation>
+                    <xs:documentation>Standard SHA512 checksum.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Script">
+                  <xs:annotation>
+                    <xs:documentation>Scripting fixup.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="SequenceIncrement">
+                  <xs:annotation>
+                    <xs:documentation>Standard sequential increment fixup.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="SequenceRandom">
+                  <xs:annotation>
+                    <xs:documentation>Standard sequential random fixup.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="TcpChecksum">
+                  <xs:annotation>
+                    <xs:documentation>Standard TCP checksum.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="UdpChecksum">
+                  <xs:annotation>
+                    <xs:documentation>Standard UDP checksum.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Param">
+    <xs:annotation>
+      <xs:documentation>Param elements provide parameters for the parent element.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>Name of the parameter.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="value" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>Value of the parameter.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Hint">
+    <xs:annotation>
+      <xs:documentation>Hints are attached to data elements providing information
+for mutators.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="name" type="xs:string" use="required" />
+      <xs:attribute name="value" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Transformer">
+    <xs:annotation>
+      <xs:documentation>Transformers perform static transforms of data.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="tns:Transformer" />
+        <xs:element ref="tns:Param" />
+      </xs:choice>
+      <xs:attribute name="class" use="required">
+        <xs:annotation>
+          <xs:documentation>Specify the class name of a Peach Transformer. You can implement your own transformers as needed.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:union>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="1024" />
+              </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="Bz2Compress">
+                  <xs:annotation>
+                    <xs:documentation>Compress on output using bz2.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Bz2Decompress">
+                  <xs:annotation>
+                    <xs:documentation>Decompress on output using bz2.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="GzipCompress">
+                  <xs:annotation>
+                    <xs:documentation>Compress on output using gzip.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="GzipDecompress">
+                  <xs:annotation>
+                    <xs:documentation>Decompress on output using gzip.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Aes128">
+                  <xs:annotation>
+                    <xs:documentation>Aes128 transform (hex &amp; binary).</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="ApacheMd5Crypt">
+                  <xs:annotation>
+                    <xs:documentation>Apache style MD5 crypt.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Crypt">
+                  <xs:annotation>
+                    <xs:documentation>UNIX style crypt.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="CvsScramble">
+                  <xs:annotation>
+                    <xs:documentation>CVS pserver password scramble.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Hmac">
+                  <xs:annotation>
+                    <xs:documentation>HMAC as described in RFC 2104.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Md5">
+                  <xs:annotation>
+                    <xs:documentation>MD5 transform (hex &amp; binary).</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Sha1">
+                  <xs:annotation>
+                    <xs:documentation>SHA-1 transform (hex &amp; binary).</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Sha256">
+                  <xs:annotation>
+                    <xs:documentation>SHA-256 transform (hex &amp; binary).</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="TripleDes">
+                  <xs:annotation>
+                    <xs:documentation>TripleDes transform (hex &amp; binary).</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="UnixMd5Crypt">
+                  <xs:annotation>
+                    <xs:documentation>UNIX style MD5 crypt.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Base64Decode">
+                  <xs:annotation>
+                    <xs:documentation>Decode on output from Base64.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Base64Encode">
+                  <xs:annotation>
+                    <xs:documentation>Encode on output as Base64.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Hex">
+                  <xs:annotation>
+                    <xs:documentation>Encode on output as a hex string.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="HtmlDecode">
+                  <xs:annotation>
+                    <xs:documentation>Decode on output from HTML encoding.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="HtmlEncode">
+                  <xs:annotation>
+                    <xs:documentation>Encode on output as HTML (encoding &lt; &gt; &amp; and ").</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Ipv4StringToOctet">
+                  <xs:annotation>
+                    <xs:documentation>Encode on output from a dot notation string to a 4 byte octet representaiton.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Ipv6StringToOctet">
+                  <xs:annotation>
+                    <xs:documentation>Encode on output from a colon notation ipv6 address into a 16 byte octect representation.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="JsEncode">
+                  <xs:annotation>
+                    <xs:documentation>Encode on output as Javascript string.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="NetBiosDecode">
+                  <xs:annotation>
+                    <xs:documentation>Deocode on output from binary representation of a NetBios name to a string.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="NetBiosEncode">
+                  <xs:annotation>
+                    <xs:documentation>Encode on output from a string to a binary NetBios representation.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="SidStringToBytes">
+                  <xs:annotation>
+                    <xs:documentation>Encode on output from a string representation of a SID to bytes. (Format: S-1-5-21-2127521184-1604012920-1887927527-1712781)</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="UrlEncode">
+                  <xs:annotation>
+                    <xs:documentation>Encode on output as a URL with spaces turned to pluses.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Eval">
+                  <xs:annotation>
+                    <xs:documentation>Evaluate a statement.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Null">
+                  <xs:annotation>
+                    <xs:documentation>Null transformer. Returns that data unaltered.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="IntToHex">
+                  <xs:annotation>
+                    <xs:documentation>Transforms an integer into hex.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Relation">
+    <xs:annotation>
+      <xs:documentation>Base class for all data element relations</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="of" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Element used to generate relation value</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="expressionSet" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Scripting expression that is run when setting the value</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="expressionGet" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Scripting expression that is run when getting the value</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="false" name="relative" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Is the offset relative</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="relativeTo" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Element to compute value relative to</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="bytes" name="lengthType" use="optional">
+        <xs:annotation>
+          <xs:documentation>Units to compute the size in</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="bytes">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of bytes.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="bits">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of bits.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="chars">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of characters.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="type" use="required">
+        <xs:annotation>
+          <xs:documentation>Specify the type of a Peach relation.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="count">
+              <xs:annotation>
+                <xs:documentation>Array count relation</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="offset">
+              <xs:annotation>
+                <xs:documentation>Byte offset relation</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="size">
+              <xs:annotation>
+                <xs:documentation>Byte size relation</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Analyzer">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:Param" />
+      </xs:sequence>
+      <xs:attribute name="class" use="required">
+        <xs:annotation>
+          <xs:documentation>Specify the class name of a Peach Analyzer. You can implement your own analyzers as needed.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:union>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="1024" />
+              </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="Binary" />
+                <xs:enumeration value="Com" />
+                <xs:enumeration value="StringToken" />
+                <xs:enumeration value="Xml" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Choice">
+    <xs:annotation>
+      <xs:documentation>Choice allows the selection of a single
+data element based on the current data set.
+The other options in the choice are available
+for mutation by the mutators.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="tns:Block" />
+        <xs:element ref="tns:Blob" />
+        <xs:element ref="tns:Choice" />
+        <xs:element ref="tns:Number" />
+        <xs:element ref="tns:Flags" />
+        <xs:element ref="tns:Padding" />
+        <xs:element ref="tns:Placement" />
+        <xs:element ref="tns:String" />
+        <xs:element ref="tns:XmlAttribute" />
+        <xs:element ref="tns:XmlElement" />
+        <xs:element ref="tns:Fixup" />
+        <xs:element ref="tns:Hint" />
+        <xs:element ref="tns:Transformer" />
+        <xs:element ref="tns:Relation" />
+        <xs:element ref="tns:Analyzer" />
+      </xs:choice>
+      <xs:attribute default="true" name="mutable" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Is element mutable</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="1" name="occurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Actual occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Element name</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="length" type="xs:unsignedInt" use="optional">
+        <xs:annotation>
+          <xs:documentation>Length in data element</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="bytes" name="lengthType" use="optional">
+        <xs:annotation>
+          <xs:documentation>Units of the length attribute</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="bytes">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of bytes.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="bits">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of bits.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="chars">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of characters.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="constraint" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Scripting expression that evaluates to true or false</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="1" name="minOccurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Minimum occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="1" name="maxOccurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Maximum occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Number">
+    <xs:annotation>
+      <xs:documentation>A numerical data element.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="tns:Placement" />
+        <xs:element ref="tns:Fixup" />
+        <xs:element ref="tns:Hint" />
+        <xs:element ref="tns:Transformer" />
+        <xs:element ref="tns:Relation" />
+        <xs:element ref="tns:Analyzer" />
+      </xs:choice>
+      <xs:attribute default="true" name="mutable" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Is element mutable</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="1" name="minOccurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Minimum occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="1" name="occurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Actual occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Element name</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="size" type="xs:unsignedInt" use="required">
+        <xs:annotation>
+          <xs:documentation>Size in bits</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="false" name="signed" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Is number signed</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="little" name="endian" use="optional">
+        <xs:annotation>
+          <xs:documentation>Byte order of number</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="big">
+              <xs:annotation>
+                <xs:documentation>Big endian encoding.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="little">
+              <xs:annotation>
+                <xs:documentation>Little endian encoding.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="network">
+              <xs:annotation>
+                <xs:documentation>Big endian encoding.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="value" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Default value</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="string" name="valueType" use="optional">
+        <xs:annotation>
+          <xs:documentation>Format of value attribute</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="string">
+              <xs:annotation>
+                <xs:documentation>Regular string. C style "\" escaping can be used such as: \r, \n, \t, and \\.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="hex">
+              <xs:annotation>
+                <xs:documentation>Hex string. Allows specifying binary data.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="literal">
+              <xs:annotation>
+                <xs:documentation>Treated as a python literal string.
+An example is "[1,2,3,4]" which would evaluate to a python list.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ipv4">
+              <xs:annotation>
+                <xs:documentation>An IPv4 string address that is converted to an array of bytes.
+An example is "127.0.0.1" which would evaluate to the bytes: 0x7f, 0x00, 0x00, 0x01.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ipv6">
+              <xs:annotation>
+                <xs:documentation>An IPv6 string address that is converted to an array of bytes.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="false" name="token" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Is element a token</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="constraint" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Scripting expression that evaluates to true or false</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="1" name="maxOccurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Maximum occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Flags">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="tns:Flag" />
+        <xs:element ref="tns:Placement" />
+        <xs:element ref="tns:Fixup" />
+        <xs:element ref="tns:Hint" />
+        <xs:element ref="tns:Transformer" />
+        <xs:element ref="tns:Relation" />
+        <xs:element ref="tns:Analyzer" />
+      </xs:choice>
+      <xs:attribute default="1" name="minOccurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Minimum occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="1" name="occurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Actual occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Element name</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="size" type="xs:unsignedInt" use="required">
+        <xs:annotation>
+          <xs:documentation>size in bits.  Typically [8, 16, 24, 32, 64]</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="little" name="endian" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Byte order of number (default 'little')</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="false" name="token" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Is element a token</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="true" name="mutable" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Is element mutable</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="constraint" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Scripting expression that evaluates to true or false</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="1" name="maxOccurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Maximum occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Flag">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="tns:Fixup" />
+        <xs:element ref="tns:Hint" />
+        <xs:element ref="tns:Transformer" />
+        <xs:element ref="tns:Relation" />
+        <xs:element ref="tns:Analyzer" />
+      </xs:choice>
+      <xs:attribute name="name" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Element name</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="position" type="xs:int" use="required">
+        <xs:annotation>
+          <xs:documentation>Bit position of flag</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="size" type="xs:int" use="required">
+        <xs:annotation>
+          <xs:documentation>size in bits</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="value" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Default value</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="string" name="valueType" use="optional">
+        <xs:annotation>
+          <xs:documentation>Format of value attribute</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="string">
+              <xs:annotation>
+                <xs:documentation>Regular string. C style "\" escaping can be used such as: \r, \n, \t, and \\.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="hex">
+              <xs:annotation>
+                <xs:documentation>Hex string. Allows specifying binary data.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="literal">
+              <xs:annotation>
+                <xs:documentation>Treated as a python literal string.
+An example is "[1,2,3,4]" which would evaluate to a python list.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ipv4">
+              <xs:annotation>
+                <xs:documentation>An IPv4 string address that is converted to an array of bytes.
+An example is "127.0.0.1" which would evaluate to the bytes: 0x7f, 0x00, 0x00, 0x01.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ipv6">
+              <xs:annotation>
+                <xs:documentation>An IPv6 string address that is converted to an array of bytes.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="false" name="token" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Is element a token</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="true" name="mutable" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Is element mutable</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Padding">
+    <xs:annotation>
+      <xs:documentation>Providing padding bytes to a DataElementContainer.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="tns:Placement" />
+        <xs:element ref="tns:Fixup" />
+        <xs:element ref="tns:Hint" />
+        <xs:element ref="tns:Transformer" />
+        <xs:element ref="tns:Relation" />
+        <xs:element ref="tns:Analyzer" />
+      </xs:choice>
+      <xs:attribute name="alignedTo" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Name of element to base our padding on</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Element name</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="8" name="alignment" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Align to this byte boundry (e.g. 8, 16, etc.)</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="constraint" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Scripting expression that evaluates to true or false</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="true" name="mutable" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Is element mutable</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="0" name="minSize" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Minimum size to pad to</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="String">
+    <xs:annotation>
+      <xs:documentation>String data element.  String elements support numerouse encodings
+such as straight ASCII through UTF-32.  Both little and big endian
+strings are supported.
+Strings also support standard attributes such as length, null termination,
+etc.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="tns:Placement" />
+        <xs:element ref="tns:Fixup" />
+        <xs:element ref="tns:Hint" />
+        <xs:element ref="tns:Transformer" />
+        <xs:element ref="tns:Relation" />
+        <xs:element ref="tns:Analyzer" />
+      </xs:choice>
+      <xs:attribute default="1" name="maxOccurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Maximum occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="false" name="nullTerminated" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Is string null terminated?</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="padCharacter" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Character to pad length with.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="1" name="occurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Actual occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="length" type="xs:unsignedInt" use="optional">
+        <xs:annotation>
+          <xs:documentation>Length in data element</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="bytes" name="lengthType" use="optional">
+        <xs:annotation>
+          <xs:documentation>Units of the length attribute</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="bytes">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of bytes.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="bits">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of bits.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="chars">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of characters.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="1" name="minOccurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Minimum occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Element name</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="ascii" name="type" use="optional">
+        <xs:annotation>
+          <xs:documentation>Type of string (encoding)</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="ascii">
+              <xs:annotation>
+                <xs:documentation>Single byte characters.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="utf7">
+              <xs:annotation>
+                <xs:documentation>Multibyte unicode characters encoded in UTF-7.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="utf8">
+              <xs:annotation>
+                <xs:documentation>Multibyte unicode characters encoded in UTF-8.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="utf16">
+              <xs:annotation>
+                <xs:documentation>Double byte characters as commonly used with Windows applications.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="utf16be">
+              <xs:annotation>
+                <xs:documentation>Multibyte unicode characters encoded in UTF-16 big endian.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="utf32">
+              <xs:annotation>
+                <xs:documentation>Multibyte unicode characters encoded in UTF-32.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="value" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Default value</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="string" name="valueType" use="optional">
+        <xs:annotation>
+          <xs:documentation>Format of value attribute</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="string">
+              <xs:annotation>
+                <xs:documentation>Regular string. C style "\" escaping can be used such as: \r, \n, \t, and \\.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="hex">
+              <xs:annotation>
+                <xs:documentation>Hex string. Allows specifying binary data.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="literal">
+              <xs:annotation>
+                <xs:documentation>Treated as a python literal string.
+An example is "[1,2,3,4]" which would evaluate to a python list.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ipv4">
+              <xs:annotation>
+                <xs:documentation>An IPv4 string address that is converted to an array of bytes.
+An example is "127.0.0.1" which would evaluate to the bytes: 0x7f, 0x00, 0x00, 0x01.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ipv6">
+              <xs:annotation>
+                <xs:documentation>An IPv6 string address that is converted to an array of bytes.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="false" name="token" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Is element a token</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="true" name="mutable" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Is element mutable</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="constraint" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Scripting expression that evaluates to true or false</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="XmlAttribute">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="tns:Block" />
+        <xs:element ref="tns:Blob" />
+        <xs:element ref="tns:Choice" />
+        <xs:element ref="tns:Number" />
+        <xs:element ref="tns:Flags" />
+        <xs:element ref="tns:Padding" />
+        <xs:element ref="tns:Placement" />
+        <xs:element ref="tns:String" />
+        <xs:element ref="tns:XmlAttribute" />
+        <xs:element ref="tns:XmlElement" />
+        <xs:element ref="tns:Fixup" />
+        <xs:element ref="tns:Hint" />
+        <xs:element ref="tns:Transformer" />
+        <xs:element ref="tns:Relation" />
+        <xs:element ref="tns:Analyzer" />
+      </xs:choice>
+      <xs:attribute name="name" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Name of element</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="constraint" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Scripting expression that evaluates to true or false</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="1" name="minOccurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Minimum occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="1" name="occurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Actual occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="attributeName" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>Name of XML attribute</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="ns" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>XML Namespace</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="length" type="xs:unsignedInt" use="optional">
+        <xs:annotation>
+          <xs:documentation>Length in data element</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="bytes" name="lengthType" use="optional">
+        <xs:annotation>
+          <xs:documentation>Units of the length attribute</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="bytes">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of bytes.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="bits">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of bits.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="chars">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of characters.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="true" name="mutable" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Is element mutable</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="1" name="maxOccurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Maximum occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="XmlElement">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="tns:Block" />
+        <xs:element ref="tns:Blob" />
+        <xs:element ref="tns:Choice" />
+        <xs:element ref="tns:Number" />
+        <xs:element ref="tns:Flags" />
+        <xs:element ref="tns:Padding" />
+        <xs:element ref="tns:Placement" />
+        <xs:element ref="tns:String" />
+        <xs:element ref="tns:XmlAttribute" />
+        <xs:element ref="tns:XmlElement" />
+        <xs:element ref="tns:Fixup" />
+        <xs:element ref="tns:Hint" />
+        <xs:element ref="tns:Transformer" />
+        <xs:element ref="tns:Relation" />
+        <xs:element ref="tns:Analyzer" />
+      </xs:choice>
+      <xs:attribute default="1" name="maxOccurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Maximum occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="1" name="occurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Actual occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Name of element</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="elementName" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>Name of XML element</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="ns" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>XML Namespace</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="length" type="xs:unsignedInt" use="optional">
+        <xs:annotation>
+          <xs:documentation>Length in data element</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="bytes" name="lengthType" use="optional">
+        <xs:annotation>
+          <xs:documentation>Units of the length attribute</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="bytes">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of bytes.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="bits">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of bits.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="chars">
+              <xs:annotation>
+                <xs:documentation>Indicates the length is specified in units of characters.</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="true" name="mutable" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Is element mutable</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="constraint" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Scripting expression that evaluates to true or false</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="1" name="minOccurs" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>Minimum occurances</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Godel">
+    <xs:complexType>
+      <xs:anyAttribute processContents="skip" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="StateModel">
+    <xs:annotation>
+      <xs:documentation>Defines a state machine to use during a fuzzing test.  State machines in Peach are intended to be
+fairly simple and allow for only the basic modeling typically required for fuzzing state aware protocols or 
+call sequences.  State machines are made up of one or more States which are in them selves make up of
+one or more Action.  As Actions are executed the data can be moved between them as needed.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="tns:Godel" />
+        <xs:element ref="tns:State" />
+      </xs:choice>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>The name of this state model.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="initialState" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>Name of the state to execute first.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="State">
+    <xs:annotation>
+      <xs:documentation>The State element defines a sequence of Actions to perform.  Actions can cause a 
+change to another State.  Such changes can occur dynamically based on content received or sent
+by attaching python expressions to actions via the onStart/onComplete/when attributes.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="tns:Godel" />
+        <xs:element ref="tns:Action" />
+      </xs:choice>
+      <xs:attribute name="name" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>The name of this state.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="onStart" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Expression to run when state is starting</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="onComplete" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Expression to run when state is completed</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Action">
+    <xs:annotation>
+      <xs:documentation>Performs an Action such as sending output, calling a method, etc.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="tns:DataModel" />
+        <xs:element ref="tns:Data" />
+        <xs:element ref="tns:Godel" />
+        <xs:element name="Param" type="tns:ActionParameter" />
+        <xs:element name="Result" type="tns:ActionData" />
+      </xs:choice>
+      <xs:attribute name="name" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Name of this action</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="publisher" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Name of publisher to use</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="when" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Only run action when expression is true</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="onStart" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Expression to run when action is starting</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="onComplete" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Expression to run when action is completed</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="method" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Method to call</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="ref" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Name of state to change to, type=ChangeState</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="property" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Property to operate on</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="setXpath" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>xpath for selecting set targets during slurp.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="valueXpath" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>xpath for selecting value during slurp</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="type" use="required">
+        <xs:annotation>
+          <xs:documentation>Specify the type of a Peach action.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="accept" />
+            <xs:enumeration value="call" />
+            <xs:enumeration value="changeState" />
+            <xs:enumeration value="close" />
+            <xs:enumeration value="connect" />
+            <xs:enumeration value="getProperty" />
+            <xs:enumeration value="input" />
+            <xs:enumeration value="open" />
+            <xs:enumeration value="output" />
+            <xs:enumeration value="setProperty" />
+            <xs:enumeration value="slurp" />
+            <xs:enumeration value="start" />
+            <xs:enumeration value="stop" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ActionParameter">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ActionData">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:Data" />
+        </xs:sequence>
+        <xs:attribute default="in" name="type" use="optional">
+          <xs:annotation>
+            <xs:documentation>The type of this parameter.</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="in" />
+              <xs:enumeration value="out" />
+              <xs:enumeration value="inout" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ActionData">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" ref="tns:DataModel" />
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation>The name of this record.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:element name="Agent">
+    <xs:annotation>
+      <xs:documentation>Configure a local or remote agent. Agents can perform various tasks during
+a fuzzing run. This element must include at least one Monitor child.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:Monitor" />
+      </xs:sequence>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>Name of agent. May not contain spaces or periods (.).</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="location" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Specify location of agent. Value is "&lt;channel%gt;://&lt;hostname&gt;" where
+&lt;channel%gt; specifies the remoting channel (tcp or local) and
+&lt;hostname%gt; specifies the hostname/ipaddress of the agent.
+If this attribute is not set a local agent will be used.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="password" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Password to the remote agent if needed.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Monitor">
+    <xs:annotation>
+      <xs:documentation>Monitors are agent modules that can perform a number of tasks such as
+monitoring a target application to detect faults, restarting virtual machines,
+recording network traffic, etc. Custom monitors can easily be created and used along
+with the included monitors.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:Param" />
+      </xs:sequence>
+      <xs:attribute name="name" use="optional">
+        <xs:annotation>
+          <xs:documentation>Monitor name.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="class" use="required">
+        <xs:annotation>
+          <xs:documentation>Specify the class name of a Peach Monitor. You can implement your own monitors as needed.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:union>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="1024" />
+              </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="CanaKitRelay">
+                  <xs:annotation>
+                    <xs:documentation>Cana Kit 4-port usb relay board.  This is a low cost board with
+4 relays that can be controlled over USB. By default this monitor will turn off then on
+a port of your choice when a fault is detected.  Optionally you can have
+the on/off occur before every iteration.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="CleanupFolder" />
+                <xs:enumeration value="IpPower9258">
+                  <xs:annotation>
+                    <xs:documentation>IP Power 9258 is a network enabled power strip.  The power ports can be
+switched on/off via HTTP.  By default this monitor will turn off then on
+a port of your choice when a fault is detected.  Optionally you can have
+the on/off occur before every iteration.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Memory" />
+                <xs:enumeration value="Pcap" />
+                <xs:enumeration value="Ping" />
+                <xs:enumeration value="Process">
+                  <xs:annotation>
+                    <xs:documentation>Start a process</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="ProcessKiller" />
+                <xs:enumeration value="RunCommand" />
+                <xs:enumeration value="Ssh" />
+                <xs:enumeration value="SaveFile">
+                  <xs:annotation>
+                    <xs:documentation>Save a file when a fault occurs.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Socket" />
+                <xs:enumeration value="SshDownloader" />
+                <xs:enumeration value="Vmware" />
+                <xs:enumeration value="LinuxCrashMonitor" />
+                <xs:enumeration value="LinuxDebugger" />
+                <xs:enumeration value="CrashReporter">
+                  <xs:annotation>
+                    <xs:documentation>Monitor will use OS X's built in CrashReporter (similar to watson)
+to detect and report crashes.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="CrashWrangler">
+                  <xs:annotation>
+                    <xs:documentation>Monitor will use OS X's built in CrashReporter (similar to watson)
+to detect and report crashes.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="CleanupRegistry" />
+                <xs:enumeration value="PageHeap" />
+                <xs:enumeration value="PopupWatcher" />
+                <xs:enumeration value="WindowsDebugger" />
+                <xs:enumeration value="WindowsService" />
+                <xs:enumeration value="FaultingMonitor">
+                  <xs:annotation>
+                    <xs:documentation>Faults on iterations in the 'Iteration' parameter.
+Reproduces faults on iterations in the 'Repro' parameter.
+If Iteration is omitted, faults on all non-control iterations.
+If Repro is omitted, reproduces all faults.
+If 'C' is in the 'Iteration' parameter, faults on a control iteration.
+If 'Iteration' parameter is '0', no faults will occur.
+If 'Repro' parameter is '0', no faults will reproduce.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Test">
+    <xs:annotation>
+      <xs:documentation>Define a test to run. Currently a test is defined as a combination of a
+Template and optionally a Data set. In the future this will expand to include a state model,
+defaults for generation, etc.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="tns:Logger" />
+        <xs:choice>
+          <xs:element minOccurs="0" maxOccurs="1" name="Include" type="tns:IncludeMutable" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Exclude" type="tns:ExcludeMutable" />
+        </xs:choice>
+        <xs:element name="Strategy" type="tns:MutationStrategy" />
+        <xs:element name="Mutators" type="tns:MutatorFilter" />
+        <xs:element name="Agent" type="tns:AgentRef" />
+        <xs:element name="StateModel" type="tns:StateModelRef" />
+        <xs:element ref="tns:Publisher" />
+      </xs:choice>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>Name of test case.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="description" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Description of test case.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="0" name="waitTime" type="xs:decimal" use="optional">
+        <xs:annotation>
+          <xs:documentation>Time to wait in seconds between each test case. Value can be fractional
+(0.25). Defaults to zero (0).</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="2" name="faultWaitTime" type="xs:decimal" use="optional">
+        <xs:annotation>
+          <xs:documentation>Time to wait in seconds between each iteration when in fault reproduction mode.
+This occurs when a fault has been detected and is being verified. Value can
+be fractional (0.25). Defaults to two (2) seconds.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="true" name="replayEnabled" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Should iterations be replayed when a fault occurs.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="0" name="controlIteration" type="xs:int" use="optional">
+        <xs:annotation>
+          <xs:documentation>How often we should perform a control iteration.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="false" name="nonDeterministicActions" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>Are action run counts non-deterministic.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Logger">
+    <xs:annotation>
+      <xs:documentation>A logging mechanism for fuzzing runs.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:Param" />
+      </xs:sequence>
+      <xs:attribute name="class" use="required">
+        <xs:annotation>
+          <xs:documentation>Specify the class name of a Peach Logger. You can implement your own loggers as needed.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:union>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="1024" />
+              </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="Filesystem">
+                  <xs:annotation>
+                    <xs:documentation>Standard file system logger.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="IncludeMutable">
+    <xs:annotation>
+      <xs:documentation>Mark state model/data models as mutable at runtime.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:MarkMutable" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MarkMutable" abstract="true">
+    <xs:annotation>
+      <xs:documentation>Mark state model/data models as mutable true/false at runtime.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="ref" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation>Name of element to mark as mutable/non-mutable.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="xpath" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation>Xpath to elements to mark as mutable/non-mutable.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="ExcludeMutable">
+    <xs:annotation>
+      <xs:documentation>Mark state model/data models as non-mutable at runtime.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:MarkMutable" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MutationStrategy">
+    <xs:annotation>
+      <xs:documentation>Mutation strategies drive the fuzzing
+that Peach performs.  Creating a fuzzing
+strategy allows one to fully control which elements
+are mutated, by which mutators, and when.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:Param" />
+    </xs:sequence>
+    <xs:attribute name="class" use="required">
+      <xs:annotation>
+        <xs:documentation>Specify the class name of a Peach MutationStrategy. You can implement your own mutationstrategys as needed.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:union>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="1024" />
+            </xs:restriction>
+          </xs:simpleType>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="Sequential" />
+              <xs:enumeration value="RandomDeterministic" />
+              <xs:enumeration value="Random" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="MutatorFilter">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="unbounded" ref="tns:Mutator" />
+    </xs:sequence>
+    <xs:attribute name="mode" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="include" />
+          <xs:enumeration value="exclude" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:element name="Mutator">
+    <xs:annotation>
+      <xs:documentation>Base class for Mutators.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:Param" />
+      </xs:sequence>
+      <xs:attribute name="class" use="required">
+        <xs:annotation>
+          <xs:documentation>Specify the class name of a Peach Mutator. You can implement your own mutators as needed.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:union>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="1024" />
+              </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="ArrayNumericalEdgeCasesMutator">
+                  <xs:annotation>
+                    <xs:documentation>Change the length of arrays to numerical edge cases</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="ArrayRandomizeOrderMutator">
+                  <xs:annotation>
+                    <xs:documentation>Randomize the order of the array</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="ArrayReverseOrderMutator">
+                  <xs:annotation>
+                    <xs:documentation>Reverse the order of the array</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="ArrayVarianceMutator">
+                  <xs:annotation>
+                    <xs:documentation>Change the length of arrays to count - N to count + N</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="BlobBitFlipperMutator">
+                  <xs:annotation>
+                    <xs:documentation>Flip a % of total bits in a blob. Default is 20%.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="BlobDWORDSliderMutator">
+                  <xs:annotation>
+                    <xs:documentation>Slides a DWORD through the blob</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="BlobMutator">
+                  <xs:annotation>
+                    <xs:documentation>Can perform more changes than BlobBitFlipper. We will grow the blob, shrink the blob, etc.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="DataElementDuplicateMutator">
+                  <xs:annotation>
+                    <xs:documentation>Duplicate a node's value starting from 1x - 50x</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="DataElementRemoveMutator">
+                  <xs:annotation>
+                    <xs:documentation>Remove nodes from a data tree</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="DataElementSwapNearNodesMutator">
+                  <xs:annotation>
+                    <xs:documentation>Swap two nodes in the data model that are near each other</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="FiniteRandomNumbersMutator">
+                  <xs:annotation>
+                    <xs:documentation>Produce a finite number of random numbers for each &lt;Number&gt; element</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="NumericalEdgeCaseMutator">
+                  <xs:annotation>
+                    <xs:documentation>This is a straight up generation class. Produces values that have nothing to do with defaultValue</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="NumericalVarianceMutator">
+                  <xs:annotation>
+                    <xs:documentation>Produce numbers that are defaultValue - N to defaultValue + N</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Change the length of sized data to numerical edge cases" />
+                <xs:enumeration value="SizedDataVaranceMutator">
+                  <xs:annotation>
+                    <xs:documentation>Change the length of sized data to count - N to count + N. Size indicator will stay the same.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="SizedNumericalEdgeCasesMutator">
+                  <xs:annotation>
+                    <xs:documentation>Change the length of sizes to numerical edge cases</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="SizedVaranceMutator">
+                  <xs:annotation>
+                    <xs:documentation>Change the length of sizes to count - N to count + N</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="StringCaseMutator">
+                  <xs:annotation>
+                    <xs:documentation>Changes the case of a string</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="StringMutator">
+                  <xs:annotation>
+                    <xs:documentation>Perform common string mutations</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="UnicodeBadUtf8Mutator">
+                  <xs:annotation>
+                    <xs:documentation>Generates bad UTF-8 strings</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="UnicodeBomMutator">
+                  <xs:annotation>
+                    <xs:documentation>Injects BOM markers into default value and longer strings</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="UnicodeStringsMutator">
+                  <xs:annotation>
+                    <xs:documentation>Perform common unicode string mutations</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="UnicodeUtf8ThreeCharMutator">
+                  <xs:annotation>
+                    <xs:documentation>Generates bad long UTF-8 three byte strings</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="ValidValuesMutator">
+                  <xs:annotation>
+                    <xs:documentation>Allows different valid values to be specified</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="WordListMutator">
+                  <xs:annotation>
+                    <xs:documentation>Allows a word list of different valid values to be specified</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="XmlW3CParserTestsMutator">
+                  <xs:annotation>
+                    <xs:documentation>Performs the W3C parser tests. Only works on &lt;String&gt; elements with a &lt;Hint name="type" value="xml"&gt;</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="AgentRef">
+    <xs:attribute name="ref" type="xs:string" use="required" />
+    <xs:attribute default="all" name="platform" use="optional">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="none" />
+          <xs:enumeration value="windows" />
+          <xs:enumeration value="osx" />
+          <xs:enumeration value="linux" />
+          <xs:enumeration value="unix" />
+          <xs:enumeration value="all" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="StateModelRef">
+    <xs:attribute name="ref" type="xs:string" use="required" />
+  </xs:complexType>
+  <xs:element name="Publisher">
+    <xs:annotation>
+      <xs:documentation>Publishers are I/O interfaces for Peach.  They glue the actions
+in a state model to the target interface.  Publishers can be 
+stream based such as files or sockets, and also call based like
+COM and shared libraries.  They can also be hybrids using both
+stream and call based methods to make more complex publishers.
+Multiple publishers can be used in a single state model to allow
+for more complex opertions such as writeing to the registry and
+then calling an RPC method.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tns:Param" />
+      </xs:sequence>
+      <xs:attribute name="name" use="optional">
+        <xs:annotation>
+          <xs:documentation>Publisher name.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="class" use="required">
+        <xs:annotation>
+          <xs:documentation>Specify the class name of a Peach Publisher. You can implement your own publishers as needed.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:union>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="1024" />
+              </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="Console" />
+                <xs:enumeration value="ConsoleHex" />
+                <xs:enumeration value="File" />
+                <xs:enumeration value="FilePerIteration" />
+                <xs:enumeration value="Http" />
+                <xs:enumeration value="Null" />
+                <xs:enumeration value="RawV4">
+                  <xs:annotation>
+                    <xs:documentation>Allows for input/output of raw IP packets.
+Protocol is the IP protocol number to send/receive.
+This publisher does not expect an IP header in the output buffer.
+The IP header is always included in the input buffer.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="RawIPv4">
+                  <xs:annotation>
+                    <xs:documentation>Allows for input/output of raw IP packets.
+Protocol is the IP protocol number to send/receive.
+This publisher expects an IP header in the output buffer.
+The IP header is always included in the input buffer.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="RawV6">
+                  <xs:annotation>
+                    <xs:documentation>Allows for input/output of raw IP packets.
+Protocol is the IP protocol number to send/receive.
+This publisher does not expect an IP header in the output buffer.
+The IP header is always included in the input buffer.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="Remote" />
+                <xs:enumeration value="SerialPort" />
+                <xs:enumeration value="Tcp" />
+                <xs:enumeration value="TcpListener" />
+                <xs:enumeration value="Udp" />
+                <xs:enumeration value="WebService" />
+                <xs:enumeration value="WebSocket">
+                  <xs:annotation>
+                    <xs:documentation>WebSocket Publisher</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="RawEther" />
+                <xs:enumeration value="Com" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+
+from waflib import Utils
+
+pin_ver = bld.env.PIN_VER
+
+if pin_ver:
+	path = bld.path.find_dir(pin_ver)
+
+	bld(
+		name='pin',
+		path=path,
+		install_path = '${BINDIR}/pin',
+		install_755 = path.ant_glob('pin pin.exe LICENSE README */runtime/** */bin/**')
+	)

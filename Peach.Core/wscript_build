@@ -1,0 +1,45 @@
+#!/usr/bin/env python
+
+deps = [
+	'System.Runtime.Remoting.dll',
+	'System.dll',
+	'System.Management.dll',
+	'System.Xml.dll',
+	'System.Core.dll',
+	'System.Data.dll',
+	'System.Web.dll',
+	'System.Web.Services.dll',
+	'System.Configuration.dll',
+
+	'NLog.dll',
+	'SharpPcap.dll',
+	'PacketDotNet.dll',
+	'Ionic.Zip.dll',
+	
+	'IronPython.dll',
+	'IronRuby.dll',
+	'IronRuby.Libraries.dll',
+	'IronRuby.Libraries.Yaml.dll',
+
+	'Microsoft.Dynamic.dll',
+	'Microsoft.CSharp.dll',
+	'Microsoft.Scripting.dll',
+	'Microsoft.Scripting.Metadata.dll',
+	
+	'Renci.SshNet.dll',
+	'Newtonsoft.Json.dll',
+	'SuperSocket.Common.dll',
+	'SuperSocket.SocketBase.dll',
+	'SuperWebSocket.dll',
+	'log4net.dll',
+]
+
+bld(
+	features = 'cs',
+	use = deps,
+	source = bld.path.ant_glob('**/*.cs'),
+	resource = 'xmltests.zip',
+	content = 'IronPython.StdLib',
+	install_644 = 'NLog.config.template',
+	name = 'Peach.Core.dll',
+)
